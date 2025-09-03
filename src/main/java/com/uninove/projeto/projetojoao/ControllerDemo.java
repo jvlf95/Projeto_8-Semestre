@@ -8,9 +8,5 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ControllerDemo {
 
-    @RequestMapping(value="/teste", method = RequestMethod.GET)
-    @ResponseBody
-    public String test(){
-        return "Olá João";
-    }
+
 }
