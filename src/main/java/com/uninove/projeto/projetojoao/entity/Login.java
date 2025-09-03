@@ -1,8 +1,6 @@
-package com.uninove.projeto.projetojoao;
+package com.uninove.projeto.projetojoao.entity;
 
 import jakarta.persistence.Entity; // Define classes como tabelas
-import jakarta.persistence.GeneratedValue; // o valor de @Id será gerado automaticamente pelo banco ou pelo Hibernate
-import jakarta.persistence.GenerationType; // enum que define como a PK será gerada
 import jakarta.persistence.Id; // indica que determinado atributo é a PK da tabela
 import jakarta.persistence.Table; // referencia o nome da tabela à classe
 import jakarta.persistence.Column; // referencia o nome da coluna ao atributo

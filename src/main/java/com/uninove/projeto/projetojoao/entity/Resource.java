@@ -1,4 +1,4 @@
-package com.uninove.projeto.projetojoao;
+package com.uninove.projeto.projetojoao.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

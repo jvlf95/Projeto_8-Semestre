@@ -1,7 +1,7 @@
-package com.uninove.projeto.projetojoao;
+package com.uninove.projeto.projetojoao.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import com.uninove.projeto.projetojoao.Reserved;
+import com.uninove.projeto.projetojoao.entity.Reserved;
 
 public interface ReservedRepository extends CrudRepository<Reserved, Integer>{
 }
