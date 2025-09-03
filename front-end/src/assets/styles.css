@@ -1,0 +1,20 @@
+body, #app {
+  font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+:root {
+    --p-font-family: 'Roboto', sans-serif;
+
+}
+
+.p-input-icon-left .pi {
+    margin-right: 0.5rem;
+}
+
+.p-button + .p-button {
+      margin-left: 0.5rem;
+}
