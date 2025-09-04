@@ -30,14 +30,11 @@ public class ControllerUser {
         return "Saved";
     }
 
-    @PostMapping(path = "/update")
-    //@ResponseBody
-
-
-    @GetMapping(path = "/all")
+    /*@GetMapping(path = "/all")
     @ResponseBody
     public Iterable<User> getAll(){
+
         return userRepository.findAll(); // retorna um JSON ou XML
-    }
+    }*/
 
 }
