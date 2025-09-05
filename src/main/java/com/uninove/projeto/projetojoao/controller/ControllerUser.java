@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+//@CrossOrigin(origins="http://localhost:3000")
 @Controller
 @RequestMapping(path = "/user") // indica que o começo da URL é /user (depois do caminho da aplicação)
 public class ControllerUser {
@@ -30,11 +32,5 @@ public class ControllerUser {
         return "Saved";
     }
 
-    /*@GetMapping(path = "/all")
-    @ResponseBody
-    public Iterable<User> getAll(){
-
-        return userRepository.findAll(); // retorna um JSON ou XML
-    }*/
 
 }

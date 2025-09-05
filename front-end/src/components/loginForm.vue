@@ -55,7 +55,7 @@
                 }
 
                 try {
-                    const req = await fetch("http://localhost:3000/login");
+                    const req = await fetch("http://localhost:5000/login");
                     
                     if (!req.ok) {
                         throw new Error("Falha ao buscar os dados de login.");
