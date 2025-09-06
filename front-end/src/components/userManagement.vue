@@ -1,7 +1,6 @@
 <template>
     <div>
         <navComp />
-        <h1>Gerenciamento de Usuários</h1>
 
         <Message v-if="successMessage" severity="success">{{ successMessage }}</Message>
         <Message v-if="errorMessage" severity="error">{{ errorMessage }}</Message>

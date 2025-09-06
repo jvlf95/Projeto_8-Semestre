@@ -43,11 +43,11 @@
       "age": 51
     },
     {
-      "id": "e020",
-      "name": "clebin",
-      "condition": "preguiçoso",
-      "weight": 85.25,
-      "age": 52
+      "id": "4a41",
+      "name": "teste",
+      "condition": "testando e nao sabendo",
+      "age": 35,
+      "weight": 65
     }
   ],
   "resources": [
@@ -55,7 +55,7 @@
       "id": "1",
       "name": "Molho de tomate 70",
       "category": "Alimento",
-      "quantity": 40,
+      "quantity": 20,
       "price": 10.2
     },
     {
@@ -94,11 +94,11 @@
       "price": 20.4
     },
     {
-      "id": "a005",
-      "name": "Batata",
-      "category": "Alimento",
-      "quantity": 10,
-      "price": 20
+      "id": "3dc6",
+      "name": "Teclado",
+      "category": "Tecnologia",
+      "quantity": 5,
+      "price": 250
     }
   ],
   "reserveds": [
@@ -142,6 +142,18 @@
       "id": "b2d1",
       "id_user": "2",
       "id_resource": "a005",
+      "quantity": 5
+    },
+    {
+      "id": "2c83",
+      "id_user": "1",
+      "id_resource": "1",
+      "quantity": 20
+    },
+    {
+      "id": "fb05",
+      "id_user": "4a41",
+      "id_resource": "3dc6",
       "quantity": 5
     }
   ]

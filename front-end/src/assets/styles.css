@@ -1,14 +1,32 @@
-body, #app {
-  font-family: 'Roboto', sans-serif;
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #111827;
+    background-image: url("../../public/background.jpg");
+    background-color: #ffffff;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+ p div {
+  color: black;
+ }
+
+h1 {
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: left;
+    width:100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
+  color: black;
 }
 
 :root {
     --p-font-family: 'Roboto', sans-serif;
-
 }
 
 .p-input-icon-left .pi {
@@ -17,4 +35,93 @@ h1, h2, h3, h4, h5, h6 {
 
 .p-button + .p-button {
       margin-left: 0.5rem;
+}
+
+.p-card {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px) ; 
+    background: none !important;
+    
+}
+
+.p-card {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3)!important;
+    color: #111827!important;
+}
+
+.p-datatable {
+    background: transparent !important;
+    
+}
+
+.p-datatable .p-datatable-thead > tr {
+    background: transparent !important;
+}
+
+.p-datatable .p-datatable-tbody > tr {
+    background: transparent !important;
+    color: #111827!important;
+}
+
+.p-datatable .p-datatable-tbody > tr.p-datatable-row-odd {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.p-datatable .p-datatable-header,
+.p-datatable .p-paginator {
+    background: transparent !important;
+}
+
+.p-datatable .p-datatable-header,
+.p-datatable .p-paginator {
+    color: var(--p-surface-900) !important;
+}
+
+.p-datatable .p-paginator {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.p-toolbar {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 0 1rem 0 !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+    background: transparent !important;
+    color: #111827 !important; 
+}
+
+.p-paginator .p-paginator-page,
+.p-paginator .p-paginator-first,
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next,
+.p-paginator .p-paginator-last {
+    color: #111827 !important;
+}
+
+.p-paginator .p-paginator-page.p-highlight {
+    background-color: var(--p-primary-500) !important;
+    border-color: var(--p-primary-500) !important;
+    color: white !important;
+}
+
+.p-input-icon-left > .pi {
+    color: #6c757d !important;
+}
+
+.p-toolbar .p-button.p-button-success {
+    background: #d4af37 !important;
+    border: none;
+    color: white !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2)!important;
+
+}
+
+.p-toolbar {
+    background: transparent !important;
+    padding-right: 0.5% !important;
+    padding-left: 0.5% !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3) !important;
 }

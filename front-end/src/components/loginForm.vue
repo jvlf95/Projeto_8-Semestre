@@ -1,25 +1,32 @@
 <template>
-    <div>
-        <Message v-if="errorMessage" severity="error" icon="pi pi-times-circle">{{ errorMessage }}</Message>
+    <Card class="login-card">
+        <template #title >
+            Login
+        </template>
+        <template #content>
+            <Message v-if="errorMessage" severity="error">{{ errorMessage }}</Message>
 
-        <form id="login-form" @submit.prevent="doLogin">
-            <div class="form-field">
-                <FloatLabel variant="in">
-                    <InputText id="username" v-model="name" />
-                    <label for="username">Username</label>
-                </FloatLabel>
-            </div>
-            
-            <div class="form-field">
-                <FloatLabel variant="in">
-                    <Password v-model="password" toggleMask :feedback="false" inputId="password" />
-                    <label for="password">Password</label>
-                </FloatLabel>
-            </div>
-            
-            <Button type="submit" label="SUBMIT" class="submit-button" />
-        </form>
-    </div>
+            <form @submit.prevent="doLogin">
+                <div class="field">
+                    <FloatLabel>
+                        <InputText id="username" v-model="name" />
+                        <label for="username">Username</label>
+                    </FloatLabel>
+                </div>
+                
+                <div class="field">
+                    <FloatLabel>
+                        <Password v-model="password" toggleMask :feedback="false" inputId="password" />
+                        <label for="password">Password</label>
+                    </FloatLabel>
+                </div>
+                
+                <div class="button-container">
+                    <Button type="submit" label="Entrar" icon="pi pi-sign-in" />
+                </div>
+            </form>
+        </template>
+    </Card>
 </template>
 
 <script>
@@ -28,6 +35,7 @@
     import Password from 'primevue/password';
     import Button from 'primevue/button';
     import Message from 'primevue/message';
+    import Card from 'primevue/card';
 
     export default {
         name:"loginForm",
@@ -36,7 +44,8 @@
             Button,
             Password,
             FloatLabel,
-            InputText
+            InputText,
+            Card
         },
         data(){
             return{
@@ -80,20 +89,35 @@
 </script>
 
 <style scoped>
-    #login-form {
-        width: 350px;
-    }
+.login-card {
+    width: 100%;
+    max-width: 350px; /* Define a largura do painel de login */
+}
 
-    .form-field {
-        margin-bottom: 1rem;
-    }
+:deep(.p-card-title) {
+    text-align: center;
+}
 
-    :deep(.p-inputtext),
-    :deep(.p-password) {
-        width: 100%;
-    }
+.field {
+    margin-top: 1.5rem;
+}
 
-    .submit-button {
-        width: 100%; 
-    }
+.button-container {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-end; /* Botão à direita */
+    margin-top: 1.5rem;
+}
+
+:deep(.p-inputtext),
+:deep(.p-password) {
+    width: 100%;
+}
+
+/* Garante que a mensagem de erro ocupe toda a largura */
+:deep(.p-message) {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1.5rem;
+}
 </style>

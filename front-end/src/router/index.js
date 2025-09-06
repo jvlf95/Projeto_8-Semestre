@@ -10,19 +10,28 @@ const routes = [
     path: '/report',
     name: 'report',
     component: () => import("../views/reportView.vue"),
-    meta: { requiresAuth: true }
+    meta: { 
+      requiresAuth: true,
+      title: 'Relatório de Recursos Reservados'
+     }
   },
   {
     path: '/user/userManagement',
     name: 'User Management',
     component: () => import("../components/userManagement.vue"),
-    meta: { requiresAuth: true }
+    meta: { 
+      requiresAuth: true,
+      title: 'Gerenciamento de Usuários'
+     }
   },
   {
-    path: '/resource/resoucerManagement',
+    path: '/resource/resourceManagement',
     name: 'Resource Management',
     component: () => import("../components/resourceManagement.vue"),
-    meta: { requiresAuth: true }
+    meta: { 
+      requiresAuth: true,
+      title: 'Gerenciamento de Recursos'
+     }
   }
 ]
 
