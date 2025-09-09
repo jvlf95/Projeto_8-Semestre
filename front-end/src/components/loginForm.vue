@@ -55,7 +55,7 @@
             }
         },
         methods: {
-            async doLogin(){
+            async doLogin() {
                 this.errorMessage = null;
 
                 if (!this.name || !this.password) {
@@ -64,19 +64,29 @@
                 }
 
                 try {
-                    const req = await fetch("http://localhost:3000/login");
+                    const loginPayload = {
+                        username: this.name,
+                        password: this.password
+                    };
+
+                    const req = await fetch("http://localhost:PORTA/login", { // <------------------ MUDA AQUI my friend
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(loginPayload)
+                    });
                     
-                    if (!req.ok) {
-                        throw new Error("Falha ao buscar os dados de login.");
-                    }
-
-                    const loginData = await req.json();
-
-                    if (loginData[0].username === this.name && loginData[0].password === this.password) {
-                        sessionStorage.setItem("isAuthenticated", "true")
+                    if (req.ok) {
+                        sessionStorage.setItem("isAuthenticated", "true");
                         this.$router.push("/report");
                     } else {
-                        this.errorMessage = "Login ou Senha inválido.";
+                        try {
+                            const errorData = await req.json();
+                            this.errorMessage = errorData.message || "Login ou Senha inválido.";
+                        } catch (e) {
+                            this.errorMessage = "Login ou Senha inválido.";
+                        }
                     }
 
                 } catch (error) {
@@ -91,7 +101,7 @@
 <style scoped>
 .login-card {
     width: 100%;
-    max-width: 350px; /* Define a largura do painel de login */
+    max-width: 350px;
 }
 
 :deep(.p-card-title) {
@@ -105,7 +115,7 @@
 .button-container {
     margin-top: 2rem;
     display: flex;
-    justify-content: flex-end; /* Botão à direita */
+    justify-content: flex-end; 
     margin-top: 1.5rem;
 }
 
@@ -114,7 +124,6 @@
     width: 100%;
 }
 
-/* Garante que a mensagem de erro ocupe toda a largura */
 :deep(.p-message) {
     width: 100%;
     box-sizing: border-box;
