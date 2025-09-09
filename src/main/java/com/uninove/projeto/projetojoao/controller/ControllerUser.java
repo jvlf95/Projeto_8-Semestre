@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Controller
 @RequestMapping(path = "/user") // indica que o começo da URL é /user (depois do caminho da aplicação)
 public class ControllerUser {
-    @Autowired
+    /*@Autowired
     private UserRepository userRepository;
 
     @PostMapping(path = "/add") // caminho para adicionar usuários
@@ -30,7 +30,7 @@ public class ControllerUser {
         n.setPeso(peso);
         userRepository.save(n);
         return "Saved";
-    }
+    }*/
 
 
 }

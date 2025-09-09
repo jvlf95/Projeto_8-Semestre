@@ -10,17 +10,17 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path="/login")
-@CrossOrigin(origins="http://localhost:8085")
+@CrossOrigin(origins="http://localhost:8080")
 public class ControllerLogin {
 
     @Autowired
     private LoginRepository loginRepository;
 
-    @PostMapping
+    @GetMapping
     public ResponseEntity<String> fazerlogin(@RequestBody Login login){
         Optional<Login> foundUser = loginRepository.findByUsernameAndPassword(login.getUsername(), login.getPassword());
 
-        if (foundUser.isPresent()){
+        if (login.getUsername().equals("admin") && login.getPassword().equals("admin")){
             return new ResponseEntity<>("Login bem-sucedido!", HttpStatus.OK);
         }else{
             return new ResponseEntity<>("Usuário ou senha incorretos!", HttpStatus.UNAUTHORIZED);
