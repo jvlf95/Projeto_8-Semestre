@@ -104,9 +104,9 @@
                 this.errorMessage = null;
                 try {
                     const [reservedsRes, usersRes, resourcesRes] = await Promise.all([
-                        fetch("http://localhost:3000/reserveds"),
-                        fetch("http://localhost:3000/users"),
-                        fetch("http://localhost:3000/resources")
+                        fetch("http://localhost:8090/reserveds"),
+                        fetch("http://localhost:8090/users"),
+                        fetch("http://localhost:8090/resources")
                     ]);
 
                     if (!reservedsRes.ok || !usersRes.ok || !resourcesRes.ok) {
@@ -139,8 +139,8 @@
             
             async loadFormDependencies() {
                 try {
-                    const usersReq = await fetch("http://localhost:3000/users");
-                    const resourcesReq = await fetch("http://localhost:3000/resources");
+                    const usersReq = await fetch("http://localhost:8090/users");
+                    const resourcesReq = await fetch("http://localhost:8090/resources");
                     if (!usersReq.ok || !resourcesReq.ok) {
                         throw new Error("Falha ao carregar as opções do formulário.");
                     }

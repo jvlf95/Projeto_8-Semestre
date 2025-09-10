@@ -1,31 +1,35 @@
 package com.uninove.projeto.projetojoao.controller;
 
-import com.uninove.projeto.projetojoao.entity.Login;
-import com.uninove.projeto.projetojoao.repository.LoginRepository;
+import com.uninove.projeto.projetojoao.LoginDto;
+import com.uninove.projeto.projetojoao.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Optional;
 
-@RestController
-@RequestMapping(path="/login")
-@CrossOrigin(origins="http://localhost:8080")
+
+@RestController // informa que é uma REST API
+@RequestMapping(path="/inicio") // informa o endereço
+@CrossOrigin(origins="http://localhost:8081")
 public class ControllerLogin {
 
     @Autowired
-    private LoginRepository loginRepository;
+    private final LoginService loginService; // acessar a base de dados
 
-    @GetMapping
-    public ResponseEntity<String> fazerlogin(@RequestBody Login login){
-        Optional<Login> foundUser = loginRepository.findByUsernameAndPassword(login.getUsername(), login.getPassword());
-
-        if (login.getUsername().equals("admin") && login.getPassword().equals("admin")){
-            return new ResponseEntity<>("Login bem-sucedido!", HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("Usuário ou senha incorretos!", HttpStatus.UNAUTHORIZED);
-        }
+    public ControllerLogin(LoginService loginService){
+        this.loginService = loginService;
     }
 
+    @PostMapping(path = "/login")
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
+        boolean isValid = loginService.validateLogin(loginDto.getUsername(), loginDto.getPassword());
+
+        if(isValid){
+            return ResponseEntity.ok("Login Realizado com sucesso!");
+        }else{
+            return ResponseEntity.status(401).body("Usuário e/ou senha inválidos!");
+        }
+
+
+    }
 
 }

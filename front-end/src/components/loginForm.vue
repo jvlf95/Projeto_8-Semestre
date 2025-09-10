@@ -55,7 +55,7 @@
                 }
 
                 try {
-                    const req = await fetch("http://localhost:8090/login");
+                    const req = await fetch("http://localhost:8090/inicio/login");
 
                     
                     if (!req.ok) {
