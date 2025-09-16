@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController // informa que é uma REST API
 @RequestMapping(path="/inicio") // informa o endereço
-@CrossOrigin(origins="http://localhost:8081")
+@CrossOrigin(origins="http://localhost:8080")
 public class ControllerLogin {
 
     @Autowired
@@ -24,8 +24,10 @@ public class ControllerLogin {
         boolean isValid = loginService.validateLogin(loginDto.getUsername(), loginDto.getPassword());
 
         if(isValid){
+            System.out.println("Sucesso");
             return ResponseEntity.ok("Login Realizado com sucesso!");
         }else{
+            System.out.println("Houve um erro");
             return ResponseEntity.status(401).body("Usuário e/ou senha inválidos!");
         }
 

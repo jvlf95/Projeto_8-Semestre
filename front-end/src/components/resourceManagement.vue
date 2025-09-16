@@ -108,7 +108,7 @@
             async getResources() {
                 this.errorMessage = null;
                 try {
-                    const req = await fetch(`http://localhost:3000/resources`);
+                    const req = await fetch(`http://localhost:8090/resources`);
                     if (!req.ok) throw new Error("Não foi possível carregar os recursos.");
                     this.resources = await req.json();
                 } catch (error) {
@@ -120,7 +120,7 @@
                 this.successMessage = null;
                 if (!window.confirm(`Tem certeza que deseja deletar ${resource.name}?`)) return;
                 try {
-                    const req = await fetch(`http://localhost:3000/resources/${resource.id}`, { method: "DELETE" });
+                    const req = await fetch(`http://localhost:8090/resources/${resource.id}`, { method: "DELETE" });
                     if (!req.ok) throw new Error("Falha ao deletar o recurso.");
                     this.successMessage = `Recurso "${resource.name}" deletado com sucesso!`;
                     this.getResources();
@@ -148,7 +148,7 @@
                 
                 const isEditing = !!this.resource.id;
                 const method = isEditing ? 'PATCH' : 'POST';
-                const url = isEditing ? `http://localhost:3000/resources/${this.resource.id}` : 'http://localhost:3000/resources';
+                const url = isEditing ? `http://localhost:8090/resources/${this.resource.id}` : 'http://localhost:8090/resources';
                 
                 try {
                     const req = await fetch(url, {

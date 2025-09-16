@@ -178,7 +178,7 @@
                 }
 
                 try {
-                    const resourceReq = await fetch(`http://localhost:3000/resources/${this.reserved.id_resource}`);
+                    const resourceReq = await fetch(`http://localhost:8090/resources/${this.reserved.id_resource}`);
                     if (!resourceReq.ok) throw new Error("Recurso selecionado não encontrado.");
                     const resourceData = await resourceReq.json();
 
@@ -191,14 +191,14 @@
                     
                     const newStock = resourceData.quantity - quantityChange;
 
-                    await fetch(`http://localhost:3000/resources/${this.reserved.id_resource}`, {
+                    await fetch(`http://localhost:8090/resources/${this.reserved.id_resource}`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ quantity: newStock })
                     });
 
                     const method = isEditing ? 'PATCH' : 'POST';
-                    const url = isEditing ? `http://localhost:3000/reserveds/${this.reserved.id}` : 'http://localhost:3000/reserveds';
+                    const url = isEditing ? `http://localhost:8090/reserveds/${this.reserved.id}` : 'http://localhost:8090/reserveds';
                     
                     const saveReservedReq = await fetch(url, {
                         method,
@@ -221,18 +221,18 @@
                 if (!window.confirm(`Tem certeza que deseja deletar a reserva de "${reservedData.resourceName}" para "${reservedData.userName}"?`)) return;
 
                 try {
-                    const resourceReq = await fetch(`http://localhost:3000/resources/${reservedData.id_resource}`);
+                    const resourceReq = await fetch(`http://localhost:8090/resources/${reservedData.id_resource}`);
                     if (!resourceReq.ok) throw new Error("Recurso não encontrado para devolver ao estoque.");
                     const resourceData = await resourceReq.json();
                     const newStock = resourceData.quantity + reservedData.quantity;
 
-                    await fetch(`http://localhost:3000/resources/${reservedData.id_resource}`, {
+                    await fetch(`http://localhost:8090/resources/${reservedData.id_resource}`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ quantity: newStock })
                     });
 
-                    const deleteReq = await fetch(`http://localhost:3000/reserveds/${reservedData.id}`, { method: 'DELETE' });
+                    const deleteReq = await fetch(`http://localhost:8090/reserveds/${reservedData.id}`, { method: 'DELETE' });
                     if (!deleteReq.ok) throw new Error("Falha ao deletar a reserva.");
 
                     this.successMessage = "Reserva deletada e estoque atualizado!";
