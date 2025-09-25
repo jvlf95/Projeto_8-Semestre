@@ -31,9 +31,9 @@
     justify-content: space-between; 
     align-items: center;
     padding: 1rem 2rem;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
+    background-color: #ac6b0bea;
     margin-bottom: 2rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3)!important;
 }
 
 .page-title {

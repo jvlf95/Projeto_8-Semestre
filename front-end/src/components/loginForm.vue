@@ -69,7 +69,7 @@
                         password: this.password
                     };
 
-                    const req = await fetch("http://localhost:PORTA/login", { // <------------------ MUDA AQUI my friend
+                    const req = await fetch("http://localhost:3000/login", { // <------------------ MUDA AQUI my friend
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -101,7 +101,8 @@
 <style scoped>
 .login-card {
     width: 100%;
-    max-width: 350px;
+    max-width: 550px;
+    height: 275px;
 }
 
 :deep(.p-card-title) {

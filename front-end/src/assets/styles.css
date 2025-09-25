@@ -1,7 +1,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     color: #111827;
-    background-image: url("../../public/background.jpg");
+    background-image: url("../../public/backtestenovo.jpeg");
     background-color: #ffffff;
     background-repeat: repeat;
     background-attachment: fixed;
@@ -38,20 +38,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .p-card {
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(12px) ; 
     background: none !important;
     
 }
 
 .p-card {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3)!important;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.5)!important;
     color: #111827!important;
 }
 
 .p-datatable {
     background: transparent !important;
-    
 }
 
 .p-datatable .p-datatable-thead > tr {
@@ -114,7 +113,7 @@ h1, h2, h3, h4, h5, h6 {
     background: #d4af37 !important;
     border: none;
     color: white !important;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2)!important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3)!important;
 
 }
 
