@@ -21,12 +21,12 @@
                 </Toolbar>
 
                 <DataTable :value="users" paginator :rows="10" v-model:filters="filters" stripedRows
-                           :globalFilterFields="['id', 'name', 'condition']" tableStyle="min-width: 50rem">
+                           :globalFilterFields="['userId', 'nome', 'condicao']" tableStyle="min-width: 50rem">
                     
-                    <Column field="id" header="ID" sortable></Column>
-                    <Column field="name" header="Nome" sortable></Column>
-                    <Column field="age" header="Idade" sortable></Column>
-                    <Column field="condition" header="Condição" sortable></Column>
+                    <Column field="userId" header="ID" sortable></Column>
+                    <Column field="nome" header="Nome" sortable></Column>
+                    <Column field="idade" header="Idade" sortable></Column>
+                    <Column field="condicao" header="Condição" sortable></Column>
 
                     <Column header="Ações" bodyClass="text-center" style="width: 15rem">
                         <template #body="slotProps">
@@ -38,30 +38,30 @@
             </template>
         </Card>
 
-        <Dialog v-model:visible="userDialog" :style="{width: '450px'}" :header="user.id ? 'Editar Usuário' : 'Novo Usuário'" :modal="true">
+        <Dialog v-model:visible="userDialog" :style="{width: '450px'}" :header="user.userId ? 'Editar Usuário' : 'Novo Usuário'" :modal="true">
             
             <div class="field">
                 <FloatLabel>
-                    <InputText id="name" v-model.trim="user.name" required="true" />
-                    <label for="name">Nome</label>
+                    <InputText id="nome" v-model.trim="user.nome" required="true" />
+                    <label for="nome">Nome</label>
                 </FloatLabel>
             </div>
              <div class="field">
                 <FloatLabel>
-                    <InputText id="condition" v-model.trim="user.condition" />
-                    <label for="condition">Condição</label>
+                    <InputText id="condicao" v-model.trim="user.condicao" />
+                    <label for="condicao">Condição</label>
                 </FloatLabel>
             </div>
             <div class="field">
                 <FloatLabel>
-                    <InputNumber id="age" v-model="user.age" integeronly />
-                    <label for="age">Idade</label>
+                    <InputNumber id="idade" v-model="user.idade" integeronly />
+                    <label for="idade">Idade</label>
                 </FloatLabel>
             </div>
             <div class="field">
                 <FloatLabel>
-                    <InputNumber id="weight" v-model="user.weight" :minFractionDigits="1" />
-                    <label for="weight">Peso</label>
+                    <InputNumber id="peso" v-model="user.peso" :minFractionDigits="1" />
+                    <label for="peso">Peso</label>
                 </FloatLabel>
             </div>
 
@@ -114,13 +114,13 @@
             },
             async deleteUser(user) {
                 this.successMessage = null;
-                if (!window.confirm(`Tem certeza que deseja deletar o usuário ${user.name}?`)) {
+                if (!window.confirm(`Tem certeza que deseja deletar o usuário ${user.nome}?`)) {
                     return;
                 }
                 try {
-                    const req = await fetch(`http://localhost:3000/users/${user.id}`, { method: "DELETE" });
+                    const req = await fetch(`http://localhost:3000/users/${user.userId}`, { method: "DELETE" });
                     if (!req.ok) throw new Error("Falha ao deletar o usuário.");
-                    this.successMessage = `Usuário "${user.name}" deletado com sucesso!`;
+                    this.successMessage = `Usuário "${user.nome}" deletado com sucesso!`;
                     this.getUsers();
                 } catch (error) {
                     this.errorMessage = error.message || "Não foi possível deletar o usuário.";
@@ -143,14 +143,14 @@
                 this.successMessage = null;
                 this.errorMessage = null;
 
-                if (!this.user.name || !this.user.age || !this.user.weight) {
+                if (!this.user.nome || !this.user.idade || !this.user.peso) {
                     this.errorMessage = "Nome, idade e peso são campos obrigatórios.";
                     return;
                 }
                 
-                const isEditing = !!this.user.id;
+                const isEditing = !!this.user.userId;
                 const method = isEditing ? 'PATCH' : 'POST';
-                const url = isEditing ? `http://localhost:3000/users/${this.user.id}` : 'http://localhost:3000/users';
+                const url = isEditing ? `http://localhost:3000/users/${this.user.userId}` : 'http://localhost:3000/users';
                 
                 try {
                     const req = await fetch(url, {
