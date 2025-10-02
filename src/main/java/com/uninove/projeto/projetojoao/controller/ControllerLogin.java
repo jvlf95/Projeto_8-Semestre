@@ -1,37 +1,39 @@
 package com.uninove.projeto.projetojoao.controller;
 
-import com.uninove.projeto.projetojoao.LoginDto;
-import com.uninove.projeto.projetojoao.service.LoginService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.uninove.projeto.projetojoao.entity.Login;
+import com.uninove.projeto.projetojoao.repository.LoginRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 
 @RestController // informa que é uma REST API
-@RequestMapping(path="/inicio") // informa o endereço
-@CrossOrigin(origins="http://localhost:8080")
+@RequestMapping(path="/login") // informa o endereço
+@CrossOrigin(origins="*")
 public class ControllerLogin {
 
-    @Autowired
-    private final LoginService loginService; // acessar a base de dados
+    private final LoginRepository loginRepository; // acessar a base de dados
 
-    public ControllerLogin(LoginService loginService){
-        this.loginService = loginService;
+    public ControllerLogin(LoginRepository loginRepository){
+        this.loginRepository = loginRepository;
     }
 
-    @PostMapping(path = "/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
-        boolean isValid = loginService.validateLogin(loginDto.getUsername(), loginDto.getPassword());
-
-        if(isValid){
-            System.out.println("Sucesso");
-            return ResponseEntity.ok("Login Realizado com sucesso!");
-        }else{
-            System.out.println("Houve um erro");
-            return ResponseEntity.status(401).body("Usuário e/ou senha inválidos!");
+    @PostMapping(path="/home")
+    public ResponseEntity<Login> testLogin(@RequestBody Login loginRequest){
+        var login = loginRepository.findByUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
+        if(login == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
+        return ResponseEntity.ok(login);
 
     }
+
+
+    // testar endpoint
+    /*@GetMapping(path="/all")
+    public Iterable<Login> getAll(){
+        return loginRepository.findAll();
+    }*/
 
 }

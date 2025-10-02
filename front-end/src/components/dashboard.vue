@@ -104,9 +104,9 @@
                 this.errorMessage = null;
                 try {
                     const [reservedsRes, usersRes, resourcesRes] = await Promise.all([
-                        fetch("http://localhost:8090/reserveds"),
-                        fetch("http://localhost:8090/users"),
-                        fetch("http://localhost:8090/resources")
+                        fetch("http://localhost:8080/reserveds"),
+                        fetch("http://localhost:8080/users/all/all"),
+                        fetch("http://localhost:8080/resources")
                     ]);
 
                     if (!reservedsRes.ok || !usersRes.ok || !resourcesRes.ok) {
@@ -139,8 +139,8 @@
             
             async loadFormDependencies() {
                 try {
-                    const usersReq = await fetch("http://localhost:8090/users");
-                    const resourcesReq = await fetch("http://localhost:8090/resources");
+                    const usersReq = await fetch("http://localhost:8080/users/all");
+                    const resourcesReq = await fetch("http://localhost:8080/resources");
                     if (!usersReq.ok || !resourcesReq.ok) {
                         throw new Error("Falha ao carregar as opções do formulário.");
                     }
@@ -178,7 +178,7 @@
                 }
 
                 try {
-                    const resourceReq = await fetch(`http://localhost:8090/resources/${this.reserved.id_resource}`);
+                    const resourceReq = await fetch(`http://localhost:8080/resources/${this.reserved.id_resource}`);
                     if (!resourceReq.ok) throw new Error("Recurso selecionado não encontrado.");
                     const resourceData = await resourceReq.json();
 
@@ -191,14 +191,14 @@
                     
                     const newStock = resourceData.quantity - quantityChange;
 
-                    await fetch(`http://localhost:8090/resources/${this.reserved.id_resource}`, {
+                    await fetch(`http://localhost:8080/resources/${this.reserved.id_resource}`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ quantity: newStock })
                     });
 
                     const method = isEditing ? 'PATCH' : 'POST';
-                    const url = isEditing ? `http://localhost:8090/reserveds/${this.reserved.id}` : 'http://localhost:8090/reserveds';
+                    const url = isEditing ? `http://localhost:8080/reserveds/${this.reserved.id}` : 'http://localhost:8080/reserveds';
                     
                     const saveReservedReq = await fetch(url, {
                         method,
@@ -221,18 +221,18 @@
                 if (!window.confirm(`Tem certeza que deseja deletar a reserva de "${reservedData.resourceName}" para "${reservedData.userName}"?`)) return;
 
                 try {
-                    const resourceReq = await fetch(`http://localhost:8090/resources/${reservedData.id_resource}`);
+                    const resourceReq = await fetch(`http://localhost:8080/resources/${reservedData.id_resource}`);
                     if (!resourceReq.ok) throw new Error("Recurso não encontrado para devolver ao estoque.");
                     const resourceData = await resourceReq.json();
                     const newStock = resourceData.quantity + reservedData.quantity;
 
-                    await fetch(`http://localhost:8090/resources/${reservedData.id_resource}`, {
+                    await fetch(`http://localhost:8080/resources/${reservedData.id_resource}`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ quantity: newStock })
                     });
 
-                    const deleteReq = await fetch(`http://localhost:8090/reserveds/${reservedData.id}`, { method: 'DELETE' });
+                    const deleteReq = await fetch(`http://localhost:8080/reserveds/${reservedData.id}`, { method: 'DELETE' });
                     if (!deleteReq.ok) throw new Error("Falha ao deletar a reserva.");
 
                     this.successMessage = "Reserva deletada e estoque atualizado!";

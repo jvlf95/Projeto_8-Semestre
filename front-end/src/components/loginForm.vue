@@ -55,7 +55,17 @@
                 }
 
                 try {
-                    const req = await fetch("http://localhost:8090/inicio/login");
+                    const req = await fetch("http://localhost:8080/login/home",{
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json"
+                      },
+                      body: JSON.stringify({
+                        username: this.name,
+                        password: this.password
+                      })
+                    });
+
 
                     
                     if (!req.ok) {
@@ -64,7 +74,7 @@
 
                     const loginData = await req.json();
 
-                    if (loginData[0].username === this.name && loginData[0].password === this.password) {
+                    if (loginData.username === this.name && loginData.password === this.password) {
                         sessionStorage.setItem("isAuthenticated", "true")
                         this.$router.push("/report");
                     } else {
