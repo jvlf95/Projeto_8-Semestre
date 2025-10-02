@@ -1,7 +1,6 @@
 <template>
     <div>
         <navComp />
-        <h1>Gerenciamento de Recursos</h1>
 
         <Message v-if="successMessage" severity="success">{{ successMessage }}</Message>
         <Message v-if="errorMessage" severity="error">{{ errorMessage }}</Message>
@@ -22,13 +21,13 @@
                 </Toolbar>
 
                 <DataTable :value="resources" paginator :rows="10" v-model:filters="filters" stripedRows
-                           :globalFilterFields="['id', 'name', 'category']" tableStyle="min-width: 50rem">
+                           :globalFilterFields="['id_resource', 'nome', 'categoria']" tableStyle="min-width: 50rem">
 
                     
-                    <Column field="id" header="ID" sortable></Column>
-                    <Column field="name" header="Nome" sortable></Column>
-                    <Column field="category" header="Categoria" sortable></Column>
-                    <Column field="quantity" header="Quantidade" sortable></Column>
+                    <Column field="id_resource" header="ID" sortable></Column>
+                    <Column field="nome" header="Nome" sortable></Column>
+                    <Column field="categoria" header="Categoria" sortable></Column>
+                    <Column field="quantidade" header="Quantidade" sortable></Column>
                     <Column field="price" header="Preço" sortable>
                         <template #body="slotProps">
                             {{ formatCurrency(slotProps.data.price) }}
@@ -45,23 +44,23 @@
             </template>
         </Card>
 
-        <Dialog v-model:visible="resourceDialog" :style="{width: '450px'}" :header="resource.id ? 'Editar Recurso' : 'Novo Recurso'" :modal="true">
+        <Dialog v-model:visible="resourceDialog" :style="{width: '450px'}" :header="resource.id_resource ? 'Editar Recurso' : 'Novo Recurso'" :modal="true">
             <div class="field">
                 <FloatLabel>
-                    <InputText id="name" v-model.trim="resource.name" required="true" />
-                    <label for="name">Nome</label>
+                    <InputText id="nome" v-model.trim="resource.nome" required="true" />
+                    <label for="nome">Nome</label>
                 </FloatLabel>
             </div>
              <div class="field">
                 <FloatLabel>
-                    <InputText id="category" v-model.trim="resource.category" />
-                    <label for="category">Categoria</label>
+                    <InputText id="categoria" v-model.trim="resource.categoria" />
+                    <label for="categoria">Categoria</label>
                 </FloatLabel>
             </div>
             <div class="field">
                 <FloatLabel>
-                    <InputNumber id="quantity" v-model="resource.quantity" integeronly />
-                    <label for="quantity">Quantidade</label>
+                    <InputNumber id="quantidade" v-model="resource.quantidade" integeronly />
+                    <label for="quantidade">Quantidade</label>
                 </FloatLabel>
             </div>
             <div class="field">
@@ -108,7 +107,7 @@
             async getResources() {
                 this.errorMessage = null;
                 try {
-                    const req = await fetch(`http://localhost:8080/resources`);
+                    const req = await fetch(`http://localhost:3000/resources`);
                     if (!req.ok) throw new Error("Não foi possível carregar os recursos.");
                     this.resources = await req.json();
                 } catch (error) {
@@ -118,11 +117,11 @@
 
             async deleteResource(resource) {
                 this.successMessage = null;
-                if (!window.confirm(`Tem certeza que deseja deletar ${resource.name}?`)) return;
+                if (!window.confirm(`Tem certeza que deseja deletar ${resource.nome}?`)) return;
                 try {
-                    const req = await fetch(`http://localhost:8080/resources/${resource.id}`, { method: "DELETE" });
+                    const req = await fetch(`http://localhost:3000/resources/${resource.id_resource}`, { method: "DELETE" });
                     if (!req.ok) throw new Error("Falha ao deletar o recurso.");
-                    this.successMessage = `Recurso "${resource.name}" deletado com sucesso!`;
+                    this.successMessage = `Recurso "${resource.nome}" deletado com sucesso!`;
                     this.getResources();
                 } catch (error) {
                     this.errorMessage = error.message || "Não foi possível deletar o recurso.";
@@ -141,14 +140,14 @@
             },
 
             async saveResource() {
-                if (!this.resource.name) {
+                if (!this.resource.nome) {
                     this.errorMessage = "O nome é obrigatório.";
                     return;
                 }
                 
-                const isEditing = !!this.resource.id;
+                const isEditing = !!this.resource.id_resource;
                 const method = isEditing ? 'PATCH' : 'POST';
-                const url = isEditing ? `http://localhost:8080/resources/${this.resource.id}` : 'http://localhost:8080/resources';
+                const url = isEditing ? `http://localhost:3000/resources/${this.resource.id_resource}` : 'http://localhost:3000/resources';
                 
                 try {
                     const req = await fetch(url, {

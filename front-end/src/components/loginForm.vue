@@ -1,25 +1,32 @@
 <template>
-    <div>
-        <Message v-if="errorMessage" severity="error" icon="pi pi-times-circle">{{ errorMessage }}</Message>
+    <Card class="login-card">
+        <template #title >
+            Login
+        </template>
+        <template #content>
+            <Message v-if="errorMessage" severity="error">{{ errorMessage }}</Message>
 
-        <form id="login-form" @submit.prevent="doLogin">
-            <div class="form-field">
-                <FloatLabel variant="in">
-                    <InputText id="username" v-model="name" />
-                    <label for="username">Username</label>
-                </FloatLabel>
-            </div>
-            
-            <div class="form-field">
-                <FloatLabel variant="in">
-                    <Password v-model="password" toggleMask :feedback="false" inputId="password" />
-                    <label for="password">Password</label>
-                </FloatLabel>
-            </div>
-            
-            <Button type="submit" label="SUBMIT" class="submit-button" />
-        </form>
-    </div>
+            <form @submit.prevent="doLogin">
+                <div class="field">
+                    <FloatLabel>
+                        <InputText id="username" v-model="name" />
+                        <label for="username">Username</label>
+                    </FloatLabel>
+                </div>
+                
+                <div class="field">
+                    <FloatLabel>
+                        <Password v-model="password" toggleMask :feedback="false" inputId="password" />
+                        <label for="password">Password</label>
+                    </FloatLabel>
+                </div>
+                
+                <div class="button-container">
+                    <Button type="submit" label="Entrar" icon="pi pi-sign-in" />
+                </div>
+            </form>
+        </template>
+    </Card>
 </template>
 
 <script>
@@ -28,6 +35,7 @@
     import Password from 'primevue/password';
     import Button from 'primevue/button';
     import Message from 'primevue/message';
+    import Card from 'primevue/card';
 
     export default {
         name:"loginForm",
@@ -36,7 +44,8 @@
             Button,
             Password,
             FloatLabel,
-            InputText
+            InputText,
+            Card
         },
         data(){
             return{
@@ -46,7 +55,7 @@
             }
         },
         methods: {
-            async doLogin(){
+            async doLogin() {
                 this.errorMessage = null;
 
                 if (!this.name || !this.password) {
@@ -55,30 +64,29 @@
                 }
 
                 try {
-                    const req = await fetch("http://localhost:8080/login/home",{
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json"
-                      },
-                      body: JSON.stringify({
+                    const loginPayload = {
                         username: this.name,
                         password: this.password
-                      })
+                    };
+
+                    const req = await fetch("http://localhost:3000/login", { // <------------------ MUDA AQUI my friend
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(loginPayload)
                     });
-
-
                     
-                    if (!req.ok) {
-                        throw new Error("Falha ao buscar os dados de login.");
-                    }
-
-                    const loginData = await req.json();
-
-                    if (loginData.username === this.name && loginData.password === this.password) {
-                        sessionStorage.setItem("isAuthenticated", "true")
+                    if (req.ok) {
+                        sessionStorage.setItem("isAuthenticated", "true");
                         this.$router.push("/report");
                     } else {
-                        this.errorMessage = "Login ou Senha inválido.";
+                        try {
+                            const errorData = await req.json();
+                            this.errorMessage = errorData.message || "Login ou Senha inválido.";
+                        } catch (e) {
+                            this.errorMessage = "Login ou Senha inválido.";
+                        }
                     }
 
                 } catch (error) {
@@ -91,20 +99,35 @@
 </script>
 
 <style scoped>
-    #login-form {
-        width: 350px;
-    }
+.login-card {
+    width: 100%;
+    max-width: 550px;
+    height: 275px;
+}
 
-    .form-field {
-        margin-bottom: 1rem;
-    }
+:deep(.p-card-title) {
+    text-align: center;
+}
 
-    :deep(.p-inputtext),
-    :deep(.p-password) {
-        width: 100%;
-    }
+.field {
+    margin-top: 1.5rem;
+}
 
-    .submit-button {
-        width: 100%; 
-    }
+.button-container {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 1.5rem;
+}
+
+:deep(.p-inputtext),
+:deep(.p-password) {
+    width: 100%;
+}
+
+:deep(.p-message) {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1.5rem;
+}
 </style>

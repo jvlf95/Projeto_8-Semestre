@@ -7,6 +7,9 @@
   export default {
     components:{
       navComp
+    },
+    mounted(){
+      document.title = "Guardian Tech"
     }
   }
 </script>
