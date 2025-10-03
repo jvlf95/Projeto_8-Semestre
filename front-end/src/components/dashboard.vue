@@ -24,11 +24,11 @@
                 
                 <DataTable v-else :value="reserveds" paginator :rows="10" stripedRows 
                            v-model:filters="filters"
-                           :globalFilterFields="['id', 'userName', 'resourceName']">
+                           :globalFilterFields="['id', 'userId', 'idResource']">
                     
                     <Column field="id" header="ID Reserva" sortable></Column>
-                    <Column field="userName" header="Usuário" sortable></Column>
-                     <Column field="resourceName" header="Recurso" sortable></Column>
+                    <Column field="userId" header="Usuário" sortable></Column>
+                     <Column field="idResource" header="Recurso" sortable></Column>
                     <Column field="quantidade" header="Quantidade" sortable></Column>
                     
                     <Column header="Ações" bodyClass="text-center">
@@ -46,11 +46,11 @@
         <Dialog v-model:visible="reservedDialog" :style="{width: '450px'}" :header="reserved.id ? 'Editar Reserva' : 'Nova Reserva'" :modal="true">
             <div class="form-group">
                 <label>Usuário</label>
-                <Dropdown v-model="reserved.user_id" :options="users" optionLabel="name" optionValue="id" placeholder="Selecione um usuário" class="w-full" />
+                <Dropdown v-model="reserved.userId" :options="users" optionLabel="name" optionValue="id" placeholder="Selecione um usuário" class="w-full" />
             </div>
             <div class="form-group">
                 <label>Recurso</label>
-                <Dropdown v-model="reserved.id_resource" :options="resources" optionLabel="name" optionValue="id" placeholder="Selecione um recurso" class="w-full" />
+                <Dropdown v-model="reserved.idResource" :options="resources" optionLabel="name" optionValue="id" placeholder="Selecione um recurso" class="w-full" />
             </div>
             <div class="form-group">
                 <label>Quantidade</label>
@@ -103,9 +103,9 @@
                 this.errorMessage = null;
                 try {
                     const [reservedsRes, usersRes, resourcesRes] = await Promise.all([
-                        fetch("http://localhost:3000/reserveds"),
-                        fetch("http://localhost:3000/users"),
-                        fetch("http://localhost:3000/resources")
+                        fetch("http://localhost:8080/reserved/all"),
+                        fetch("http://localhost:8080/users/all"),
+                        fetch("http://localhost:8080/resource/all")
                     ]);
 
                     if (!reservedsRes.ok || !usersRes.ok || !resourcesRes.ok) {
@@ -117,13 +117,13 @@
                     const resourcesData = await resourcesRes.json();
 
                     const userMap = new Map(usersData.map(user => [user.userId, user.nome]));
-                    const resourceMap = new Map(resourcesData.map(res => [res.id_resource, res.nome]));
+                    const resourceMap = new Map(resourcesData.map(res => [res.idResource, res.nome]));
 
                     const processedReserveds = reservedsData.map(reserved => {
                         return {
                             ...reserved,
-                            userName: userMap.get(reserved.user_id) || `ID ${reserved.user_id} Inválido`,
-                            resourceName: resourceMap.get(reserved.id_resource) || `ID ${reserved.id_resource} Inválido`
+                            userId: userMap.get(reserved.userId) || `ID ${reserved.userId} Inválido`,
+                            idResource: resourceMap.get(reserved.idResource) || `ID ${reserved.idResource} Inválido`
                         };
                     });
                     
@@ -138,8 +138,8 @@
             
             async loadFormDependencies() {
                 try {
-                    const usersReq = await fetch("http://localhost:3000/users");
-                    const resourcesReq = await fetch("http://localhost:3000/resources");
+                    const usersReq = await fetch("http://localhost:8080/users/all");
+                    const resourcesReq = await fetch("http://localhost:8080/resource/all");
                     if (!usersReq.ok || !resourcesReq.ok) {
                         throw new Error("Falha ao carregar as opções do formulário.");
                     }
@@ -159,8 +159,8 @@
             editReserved(reservedData) {
                 this.reserved = { 
                     id: reservedData.id,
-                    user_id: reservedData.user_id,
-                    id_resource: reservedData.id_resource,
+                    userId: reservedData.userId,
+                    idResource: reservedData.idResource,
                     quantidade: reservedData.quantidade
                 };
                 this.originalReserved = { ...reservedData };
@@ -171,13 +171,13 @@
             },
 
             async saveReserved() {
-                if (!this.reserved.user_id || !this.reserved.id_resource || !this.reserved.quantidade || this.reserved.quantidade < 1) {
+                if (!this.reserved.userId || !this.reserved.idResource || !this.reserved.quantidade || this.reserved.quantidade < 1) {
                     this.errorMessage = "Todos os campos são obrigatórios.";
                     return;
                 }
 
                 try {
-                    const resourceReq = await fetch(`http://localhost:3000/resources/${this.reserved.id_resource}`);
+                    const resourceReq = await fetch(`http://localhost:8080/resource/all/${this.reserved.idResource}`);
                     if (!resourceReq.ok) throw new Error("Recurso selecionado não encontrado.");
                     const resourceData = await resourceReq.json();
 
@@ -190,19 +190,19 @@
                     
                     const newStock = resourceData.quantidade - quantidadeChange;
 
-                    await fetch(`http://localhost:3000/resources/${this.reserved.id_resource}`, {
+                    await fetch(`http://localhost:8080/resource/all/${this.reserved.idResource}`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ quantidade: newStock })
                     });
 
                     const method = isEditing ? 'PATCH' : 'POST';
-                    const url = isEditing ? `http://localhost:3000/reserveds/${this.reserved.id}` : 'http://localhost:3000/reserveds';
+                    const url = isEditing ? `http://localhost:8080/reserveds/${this.reserved.id}` : 'http://localhost:8080/reserveds';
                     
                     const saveReservedReq = await fetch(url, {
                         method,
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ user_id: this.reserved.user_id, id_resource: this.reserved.id_resource, quantidade: this.reserved.quantidade })
+                        body: JSON.stringify({ userId: this.reserved.userId, idResource: this.reserved.idResource, quantidade: this.reserved.quantidade })
                     });
                     if (!saveReservedReq.ok) throw new Error("Falha ao salvar a reserva.");
 
@@ -217,21 +217,21 @@
             },
 
             async deleteReserved(reservedData) {
-                if (!window.confirm(`Tem certeza que deseja deletar a reserva de "${reservedData.resourceName}" para "${reservedData.userName}"?`)) return;
+                if (!window.confirm(`Tem certeza que deseja deletar a reserva de "${reservedData.idResource}" para "${reservedData.userId}"?`)) return;
 
                 try {
-                    const resourceReq = await fetch(`http://localhost:3000/resources/${reservedData.id_resource}`);
+                    const resourceReq = await fetch(`http://localhost:8080/resource/all/${reservedData.idResource}`);
                     if (!resourceReq.ok) throw new Error("Recurso não encontrado para devolver ao estoque.");
                     const resourceData = await resourceReq.json();
                     const newStock = resourceData.quantidade + reservedData.quantidade;
 
-                    await fetch(`http://localhost:3000/resources/${reservedData.id_resource}`, {
+                    await fetch(`http://localhost:8080/resource/all/${reservedData.idResource}`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ quantidade: newStock })
                     });
 
-                    const deleteReq = await fetch(`http://localhost:3000/reserveds/${reservedData.id}`, { method: 'DELETE' });
+                    const deleteReq = await fetch(`http://localhost:8080/reserveds/${reservedData.id}`, { method: 'DELETE' });
                     if (!deleteReq.ok) throw new Error("Falha ao deletar a reserva.");
 
                     this.successMessage = "Reserva deletada e estoque atualizado!";

@@ -69,7 +69,7 @@
                         password: this.password
                     };
 
-                    const req = await fetch("http://localhost:3000/login", { // <------------------ MUDA AQUI my friend
+                    const req = await fetch("http://localhost:8080/login/home", { // <------------------ MUDA AQUI my friend
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

@@ -21,16 +21,16 @@
                 </Toolbar>
 
                 <DataTable :value="resources" paginator :rows="10" v-model:filters="filters" stripedRows
-                           :globalFilterFields="['id_resource', 'nome', 'categoria']" tableStyle="min-width: 50rem">
+                           :globalFilterFields="['idResource', 'nome', 'categoria']" tableStyle="min-width: 50rem">
 
                     
-                    <Column field="id_resource" header="ID" sortable></Column>
+                    <Column field="idResource" header="ID" sortable></Column>
                     <Column field="nome" header="Nome" sortable></Column>
                     <Column field="categoria" header="Categoria" sortable></Column>
                     <Column field="quantidade" header="Quantidade" sortable></Column>
-                    <Column field="price" header="Preço" sortable>
+                    <Column field="preco" header="Preço" sortable>
                         <template #body="slotProps">
-                            {{ formatCurrency(slotProps.data.price) }}
+                            {{ formatCurrency(slotProps.data.preco) }}
                         </template>
                     </Column>
 
@@ -44,7 +44,7 @@
             </template>
         </Card>
 
-        <Dialog v-model:visible="resourceDialog" :style="{width: '450px'}" :header="resource.id_resource ? 'Editar Recurso' : 'Novo Recurso'" :modal="true">
+        <Dialog v-model:visible="resourceDialog" :style="{width: '450px'}" :header="resource.idResource ? 'Editar Recurso' : 'Novo Recurso'" :modal="true">
             <div class="field">
                 <FloatLabel>
                     <InputText id="nome" v-model.trim="resource.nome" required="true" />
@@ -65,8 +65,8 @@
             </div>
             <div class="field">
                 <FloatLabel>
-                    <InputNumber id="price" v-model="resource.price" mode="currency" currency="BRL" locale="pt-BR" />
-                    <label for="price">Preço</label>
+                    <InputNumber id="preco" v-model="resource.preco" mode="currency" currency="BRL" locale="pt-BR" />
+                    <label for="preco">Preço</label>
                 </FloatLabel>
             </div>
             <template #footer>
@@ -107,7 +107,7 @@
             async getResources() {
                 this.errorMessage = null;
                 try {
-                    const req = await fetch(`http://localhost:3000/resources`);
+                    const req = await fetch(`http://localhost:8080/resource/all`);
                     if (!req.ok) throw new Error("Não foi possível carregar os recursos.");
                     this.resources = await req.json();
                 } catch (error) {
@@ -119,7 +119,7 @@
                 this.successMessage = null;
                 if (!window.confirm(`Tem certeza que deseja deletar ${resource.nome}?`)) return;
                 try {
-                    const req = await fetch(`http://localhost:3000/resources/${resource.id_resource}`, { method: "DELETE" });
+                    const req = await fetch(`http://localhost:8080/resources/${resource.idResource}`, { method: "DELETE" });
                     if (!req.ok) throw new Error("Falha ao deletar o recurso.");
                     this.successMessage = `Recurso "${resource.nome}" deletado com sucesso!`;
                     this.getResources();
@@ -145,9 +145,9 @@
                     return;
                 }
                 
-                const isEditing = !!this.resource.id_resource;
+                const isEditing = !!this.resource.idResource;
                 const method = isEditing ? 'PATCH' : 'POST';
-                const url = isEditing ? `http://localhost:3000/resources/${this.resource.id_resource}` : 'http://localhost:3000/resources';
+                const url = isEditing ? `http://localhost:8080/resources/${this.resource.idResource}` : 'http://localhost:8080/resources';
                 
                 try {
                     const req = await fetch(url, {

@@ -21,7 +21,7 @@ public class Reserved {
     private int userId;
 
     @Column(name = "id_resource")
-    private int resourceId;
+    private int idResource;
 
     @Column(name = "quantidade")
     private int quantidade;
@@ -34,8 +34,8 @@ public class Reserved {
         return userId;
     }
 
-    public int getResourceId(){
-        return resourceId;
+    public int getIdResource(){
+        return idResource;
     }
 
     public int getQuantidade(){
@@ -50,8 +50,8 @@ public class Reserved {
         this.userId = i;
     }
 
-    public void setResourceId(int i){
-        this.resourceId = i;
+    public void setIdResource(int i){
+        this.idResource = i;
     }
 
     public void setQuantidade(int q){

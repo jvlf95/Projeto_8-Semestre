@@ -103,7 +103,7 @@
                 this.isLoading = true;
                 this.errorMessage = null;
                 try {
-                    const req = await fetch(`http://localhost:3000/users`);
+                    const req = await fetch(`http://localhost:8080/users/all`);
                     if (!req.ok) throw new Error("Não foi possível carregar os usuários.");
                     this.users = await req.json();
                 } catch (error) {
@@ -118,7 +118,7 @@
                     return;
                 }
                 try {
-                    const req = await fetch(`http://localhost:3000/users/${user.userId}`, { method: "DELETE" });
+                    const req = await fetch(`http://localhost:8080/users/${user.userId}`, { method: "DELETE" });
                     if (!req.ok) throw new Error("Falha ao deletar o usuário.");
                     this.successMessage = `Usuário "${user.nome}" deletado com sucesso!`;
                     this.getUsers();
@@ -150,7 +150,7 @@
                 
                 const isEditing = !!this.user.userId;
                 const method = isEditing ? 'PATCH' : 'POST';
-                const url = isEditing ? `http://localhost:3000/users/${this.user.userId}` : 'http://localhost:3000/users';
+                const url = isEditing ? `http://localhost:8080/users/${this.user.userId}` : 'http://localhost:8080/users';
                 
                 try {
                     const req = await fetch(url, {
