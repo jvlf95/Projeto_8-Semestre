@@ -197,7 +197,7 @@
                     });
 
                     const method = isEditing ? 'PATCH' : 'POST';
-                    const url = isEditing ? `http://localhost:8080/reserveds/${this.reserved.id}` : 'http://localhost:8080/reserveds';
+                    const url = isEditing ? `http://localhost:8080/reserveds/${this.reserved.id}` : 'http://localhost:8080/reserved/create';
                     
                     const saveReservedReq = await fetch(url, {
                         method,

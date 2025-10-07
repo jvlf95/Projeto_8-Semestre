@@ -22,4 +22,11 @@ public class ControllerReserved {
     public Iterable<Reserved> getAll(){
         return reservedRepository.findAll();
     }
+
+
+
+    @PostMapping(path="/create")
+    public Reserved setReserved(@RequestBody Reserved requestReserved){
+        return reservedRepository.save(requestReserved);
+    }
 }

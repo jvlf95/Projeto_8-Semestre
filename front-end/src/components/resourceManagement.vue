@@ -119,7 +119,7 @@
                 this.successMessage = null;
                 if (!window.confirm(`Tem certeza que deseja deletar ${resource.nome}?`)) return;
                 try {
-                    const req = await fetch(`http://localhost:8080/resources/${resource.idResource}`, { method: "DELETE" });
+                    const req = await fetch(`http://localhost:8080/resource/delete/${resource.idResource}`, { method: "DELETE" });
                     if (!req.ok) throw new Error("Falha ao deletar o recurso.");
                     this.successMessage = `Recurso "${resource.nome}" deletado com sucesso!`;
                     this.getResources();
@@ -147,7 +147,7 @@
                 
                 const isEditing = !!this.resource.idResource;
                 const method = isEditing ? 'PATCH' : 'POST';
-                const url = isEditing ? `http://localhost:8080/resources/${this.resource.idResource}` : 'http://localhost:8080/resources';
+                const url = isEditing ? `http://localhost:8080/resource/patch/${this.resource.idResource}` : 'http://localhost:8080/resource/create';
                 
                 try {
                     const req = await fetch(url, {

@@ -2,10 +2,8 @@ package com.uninove.projeto.projetojoao.controller;
 
 import com.uninove.projeto.projetojoao.entity.User;
 import com.uninove.projeto.projetojoao.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins="*")
 @RestController
@@ -21,5 +19,25 @@ public class ControllerUser {
     @GetMapping(path="/all")
     public Iterable<User> getAll(){
         return userRepository.findAll();
+    }
+
+    @GetMapping(path="/all/{id}")
+    public Optional<User> getUser(@PathVariable int id){
+        return userRepository.findById(id);
+    }
+
+    @PatchMapping(path="/patch/{id}")
+    public User updateUser(@PathVariable int id,@RequestBody User requestUser){
+        return userRepository.save(requestUser);
+    }
+
+    @DeleteMapping(path="/delete/{id}")
+    public void deleteUser(@PathVariable int id){
+        userRepository.deleteById(id);
+    }
+
+    @PostMapping(path="/create")
+    public User setUser(@RequestBody User requestUser){
+        return userRepository.save(requestUser);
     }
 }

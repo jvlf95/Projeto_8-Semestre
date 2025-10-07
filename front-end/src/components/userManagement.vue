@@ -118,7 +118,7 @@
                     return;
                 }
                 try {
-                    const req = await fetch(`http://localhost:8080/users/${user.userId}`, { method: "DELETE" });
+                    const req = await fetch(`http://localhost:8080/users/delete/${user.userId}`, { method: "DELETE" });
                     if (!req.ok) throw new Error("Falha ao deletar o usuário.");
                     this.successMessage = `Usuário "${user.nome}" deletado com sucesso!`;
                     this.getUsers();
@@ -150,7 +150,7 @@
                 
                 const isEditing = !!this.user.userId;
                 const method = isEditing ? 'PATCH' : 'POST';
-                const url = isEditing ? `http://localhost:8080/users/${this.user.userId}` : 'http://localhost:8080/users';
+                const url = isEditing ? `http://localhost:8080/users/patch/${this.user.userId}` : 'http://localhost:8080/users/create';
                 
                 try {
                     const req = await fetch(url, {
